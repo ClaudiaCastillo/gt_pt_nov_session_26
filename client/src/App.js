@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 
 import axios from 'axios';
+import { withRouter, Route } from 'react-router-dom';
+
+import Auth from './Auth';
+
+import Header from './components/Header';
+import Callback from './components/Callback';
 
 class App extends Component {
   constructor() {
@@ -13,10 +17,10 @@ class App extends Component {
     }
   }
 
-  componentDidMount = () => {
-    axios.get('/api/test')
-      .then(res => console.log(res.data));
-  }
+  // componentDidMount = () => {
+  //   axios.get('/api/test')
+  //     .then(res => console.log(res.data));
+  // }
   
   handleChange = (e) => {
     this.setState({
@@ -32,17 +36,22 @@ class App extends Component {
   }
 
   render() {
+    const auth = new Auth(this.props.history);
+    const isAuth = auth.isAuthenticated();
+
     return (
-      <div className="App">
-        <h1>Change</h1>
-        
-        <form>
-          <input type="text" name="url" onChange={this.handleChange}/>
-          <button onClick={this.createGiphy}>Add Giphy</button>
-        </form>
-      </div>
+      <main>
+        <Header 
+          isAuth={isAuth}
+          login={auth.login}
+          logout={auth.logout} />
+
+        <Route path="/callback" render={() => (
+          <Callback processAuth={auth.processAuthentication} />
+        )} />
+      </main>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
