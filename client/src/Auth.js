@@ -3,9 +3,9 @@ import auth0 from 'auth0-js';
 
 export default class Auth {
   constructor(history) {
-    this.auth = new auth0.WebAuth({
+    this.auth0 = new auth0.WebAuth({
       domain: 'jdtadlock.auth0.com',
-      clientID: 'rFeXlFxvDp80HnA5eslnNRc3S0lgPBMU',
+      clientID: 'I2ULWQ0fuYCDcG6xs7QlsTRMfOtyiDW6',
       redirectUri: 'http://localhost:3000/callback',
       audience: 'https://jdtadlock.auth0.com/userinfo',
       responseType: 'token id_token',
@@ -17,40 +17,43 @@ export default class Auth {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.processAuthentication = this.processAuthentication.bind(this);
+    this.login = this.login.bind(this);
   }
 
   login() {
-    this.auth.authorize();
+    this.auth0.authorize();
   }
 
   logout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('user_email');
 
     this.history.push('/');
   }
 
   processAuthentication() {
-    this.auth.parseHash((err, authResults) => {
-      if (err) return this.history.push('/');
+    this.auth0.parseHash((err, authResult) => {
+      if ( err ) return this.history.push('/');
 
-      if (authResults && authResults.accessToken && authResults.idToken) {
-        console.log(authResults);
-        let expires_at = JSON.stringify((authResults.expiresIn) * 1000 + new Date().getTime());
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        let expires_at = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime());
 
-        localStorage.setItem('access_token', authResults.accessToken);
-        localStorage.setItem('id_token', authResults.idToken);
+        localStorage.setItem('access_token', authResult.accessToken);
+        localStorage.setItem('id_token', authResult.idToken);
         localStorage.setItem('expires_at', expires_at);
-        localStorage.setItem('user_email', authResults.idTokenPayload.email);
-        
+        localStorage.setItem('user_email', authResult.idTokenPayload.email);
+
         this.history.push('/dashboard');
-      }
+      } 
     });
   }
 
   isAuthenticated() {
     let expires_at = JSON.parse(localStorage.getItem('expires_at'));
+
     return new Date().getTime() < expires_at;
   }
 }
+

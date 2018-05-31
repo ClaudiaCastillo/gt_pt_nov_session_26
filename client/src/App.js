@@ -4,7 +4,6 @@ import { Route, withRouter, Redirect } from 'react-router-dom';
 import Auth from './Auth';
 
 import Header from './components/Header';
-import Form from './components/Form';
 import Dashboard from './components/Dashboard';
 import Callback from './components/Callback';
 
@@ -13,20 +12,13 @@ class App extends Component {
     super();
     
     this.state = {
-      url: '',
       name: '',
       email: '',
       showModal: false,
-      search: ''
+      search: '',
+      query: '',
+      results: []
     }
-  }
-
-  componentDidMount = () => {
-    // if ( this.props.isAuthenticated() ) {
-    //   this.setState({
-    //     name: 
-    //   })
-    // }
   }
   
   handleChange = (e) => {
@@ -35,18 +27,43 @@ class App extends Component {
     });
   }
 
-  createGiphy = (e) => {
-    e.preventDefault();
+  favoriteGif = (gif_id, url) => {
+    let email = localStorage.getItem('user_email');
 
-    axios.post('/api/giphy', {url: this.state.url})
-      .then(res => console.log(res.data));
+    axios.post('/api/gif', {
+      gif_id: gif_id,
+      url: url,
+      email: email
+    }).then(res => {
+      console.log(res.data)
+    });
   }
 
   getSearchResults = (e) => {
     let key = e.keyCode || e.which;
-    if ( key === 13 ) {
-      console.log('yep');
-    }
+    let api_key = '3K2ZmyEMrXGGyR7EGBGnbti1HZNk2TZL';
+
+    if ( e.target.tagName === 'I' || key === 13 ) {
+      axios.get(`https://api.giphy.com/v1/gifs/search?api_key=${api_key}&q=${this.state.search}`)
+        .then(({data:gifs}) => {
+          let results = [];
+          
+          gifs.data.forEach(gif => {
+            let image = new Image();
+            let src = gif.images.downsized.url;
+
+            image.src = src;
+            image.onload = () => {
+              results.push({id: gif.id, src});
+              this.setState({ results: [...results] });
+
+              image.remove();
+            }
+          });
+
+          this.setState({query: this.state.search, search: ''});
+        });
+    } 
   }
 
   render() {
@@ -64,11 +81,11 @@ class App extends Component {
           search={this.state.search} />
         
         <Route path="/dashboard" render={() => (
-          <div>
-            {isAuth ? <Dashboard /> : <Redirect to="/" />}
-
-            {this.state.showModal ? <Form url={this.state.url} change={this.handleChange} /> : ''}
-          </div>
+          isAuth ? 
+            <Dashboard 
+              results={this.state.results} 
+              search={this.state.query}
+              favoriteGif={this.favoriteGif} /> : <Redirect to="/" />
         )} />
 
         <Route path="/" exact render={() => {

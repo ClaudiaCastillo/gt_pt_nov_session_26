@@ -1,49 +1,48 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const Dashboard = props => (
-  <section className="dashboard">
-    <div className="tabs row">
-      <span className="active">Favorites</span>
-      <span>Results</span>
-    </div>
+class Dashboard extends Component {
+  copyLink = link => {
+    let input = document.createElement('input');
 
-    <div className="listing">
-      <div className="giphy column bottom" style={{ backgroundImage: 'url(https://media2.giphy.com/media/3ohs4zGDw3w3Goq2QM/giphy.gif)' }}>
-        <div className="giphy-controls row split">
-          <i className="fa fa-heart"></i>
-          <button>Copy Link</button>
+    input.value = link;
+    input.style.position = 'absolute';
+    input.style.left = '-9999px';
+
+    document.body.appendChild(input);
+    input.select();
+
+    document.execCommand('copy');
+    input.remove();
+  }
+
+  render() {
+    return(
+      <section className="dashboard" >
+        <div className="tabs row">
+          <span className="active">Results</span>
+          <span>Favorites</span>
         </div>
-      </div>
 
-      <div className="giphy column bottom" style={{ backgroundImage: 'url(https://media2.giphy.com/media/3ohs4zGDw3w3Goq2QM/giphy.gif)' }}>
-        <div className="giphy-controls row split">
-          <i className="fa fa-heart"></i>
-          <button>Copy Link</button>
-        </div>
-      </div>
+        {!this.props.results.length ? <h3>Type a search phrase into the input above.</h3> : ''}
 
-      <div className="giphy column bottom" style={{ backgroundImage: 'url(https://media2.giphy.com/media/3ohs4zGDw3w3Goq2QM/giphy.gif)' }}>
-        <div className="giphy-controls row split">
-          <i className="fa fa-heart"></i>
-          <button>Copy Link</button>
-        </div>
-      </div>
+        {this.props.results.length ? <p className="query">Results for "{this.props.search}"</p> : ''}
 
-      <div className="giphy column bottom" style={{ backgroundImage: 'url(https://media2.giphy.com/media/3ohs4zGDw3w3Goq2QM/giphy.gif)' }}>
-        <div className="giphy-controls row split">
-          <i className="fa fa-heart"></i>
-          <button>Copy Link</button>
+        <div className="listing">
+          {this.props.results.map(gif => (
+            <div
+              key={gif.id}
+              className="giphy column bottom"
+              style={{ backgroundImage: `url(${gif.src})` }}>
+              <div className="giphy-controls row split">
+                <i className="fa fa-heart" onClick={() => this.props.favoriteGif(gif.id, gif.src)}></i>
+                <button onClick={() => this.copyLink(gif.src)}>Copy Link</button>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-
-      <div className="giphy column bottom" style={{ backgroundImage: 'url(https://media2.giphy.com/media/3ohs4zGDw3w3Goq2QM/giphy.gif)' }}>
-        <div className="giphy-controls row split">
-          <i className="fa fa-heart"></i>
-          <button>Copy Link</button>
-        </div>
-      </div>
-    </div>
-  </section>
-);
+      </section>
+    )
+  }
+}
 
 export default Dashboard;
