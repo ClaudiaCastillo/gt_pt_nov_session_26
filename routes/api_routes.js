@@ -10,10 +10,19 @@ const User = require('../models/User');
 // User.findById('5b1077c26de1a513bc3ae5f3').populate('gifs').exec((err, user) => {
 //   console.log(user);
 // });
-// Gif.find({}).populate('users').then(users => console.log(users));
+// User.find({}).populate('gifs').then(users => console.log(users));
 
-router.get('/api/favorites/:user_id', (req, res) => {
+// Get Favorites
+router.get('/api/favorites', (req, res) => {
+  let email = req.query.email;
 
+  User.findOne({email: email})
+    .populate('gifs')
+    .then(user => {
+      if ( user )
+        res.send(user.gifs);
+      else res.send(null);
+    });
 });
 
 // Save Favorite
@@ -47,7 +56,7 @@ router.post('/api/gif', (req, res) => {
         .then(gif => {
             // Gif doesn't exist
             if (!gif) {
-
+              console.log(req.body);
               // Create a new gif with data from the front end
               Gif.create({
                   gif_id: req.body.gif_id,
@@ -91,6 +100,19 @@ router.post('/api/gif', (req, res) => {
       }
     
     });
+});
+
+router.delete('/api/gif', (req, res) => {
+  User.findOne({email: req.query.email})
+    .then(user => {
+      Gif.findOne({gif_id: req.query.gif_id})
+        .then(gif => {
+
+          user.gifs.remove(gif._id);
+          user.save().then(() => res.send({ message: 'Favorite removed successfully!' }));
+        });
+    });
+
 });
 
 module.exports = router;

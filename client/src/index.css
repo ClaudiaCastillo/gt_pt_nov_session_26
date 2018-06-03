@@ -224,6 +224,11 @@ p.query {
     transition: transform .2s;
 }
 
+.listing .giphy .giphy-controls i.fa-heart.added {
+    color: rgb(116, 148, 255);
+    transform: scale(1.2);
+}
+
 .listing .giphy .giphy-controls i.fa-heart:hover {
     transform: scale(1.2);
 }
