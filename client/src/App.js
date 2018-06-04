@@ -19,7 +19,9 @@ class App extends Component {
       query: '',
       results: [],
       favorites: [],
-      show_favorites: false
+      show_favorites: false,
+      current_page: 1,
+      offset: 0
     }
   }
   
@@ -82,17 +84,37 @@ class App extends Component {
       });
   }
 
+  changePage = (up) => {
+    let current_page = this.state.current_page;
+    let offset = this.state.offset;
+
+
+    this.setState({
+      current_page: up ? current_page + 1 : current_page > 1 ? current_page - 1 : current_page,
+      offset: up ? offset + 25 : current_page > 1 ? offset - 25 : offset
+    });
+
+    if (!up && current_page < 2) return;
+
+    this.getSearchResults('page');
+  }
+
   getSearchResults = (e) => {
+    let api_url = 'https://api.giphy.com/v1/gifs/search';
     let key = e.keyCode || e.which;
     let api_key = '3K2ZmyEMrXGGyR7EGBGnbti1HZNk2TZL';
+    let is_page = e === 'page';
 
-    if ( e.target.tagName === 'I' || key === 13 ) {
+    if ( is_page || e.target.tagName === 'I' || key === 13 ) {
+      
       this.getUserFavorites()
         .then(() => {
-          axios.get(`https://api.giphy.com/v1/gifs/search?api_key=${api_key}&q=${this.state.search}&offset=25`)
+          let search = is_page ? this.state.query : this.state.search;
+          
+          axios.get(`${api_url}?api_key=${api_key}&q=${search}&offset=${this.state.offset}`)
             .then(({ data: gifs }) => {
               let results = [];
-              console.log(gifs);
+              
               gifs.data.forEach(gif => {
                 let image = new Image();
                 let src = gif.images.downsized.url;
@@ -111,9 +133,12 @@ class App extends Component {
                 }
               });
 
-              this.setState({ query: this.state.search, search: '', show_favorites: false });
+              this.setState({ 
+                query: is_page ? this.state.query : this.state.search, 
+                search: '', 
+                show_favorites: false });
             });
-        })
+        });
       
     } 
   }
@@ -123,45 +148,54 @@ class App extends Component {
     const isAuth = auth.isAuthenticated();
 
     return (
-      <main className="column">
-        <Header 
-          isAuth={isAuth} 
-          login={auth.login} 
-          logout={auth.logout}
-          getSearchResults={this.getSearchResults}
-          handleChange={this.handleChange}
-          search={this.state.search} />
-        
-        <Route path="/dashboard" render={() => (
-          isAuth ? 
-            <Dashboard 
-              results={this.state.results} 
-              search={this.state.query}
-              setFavorite={this.setFavorite}
-              favorites={this.state.favorites}
-              show_favorites={this.state.show_favorites}
-              switchTab={this.switchTab} /> : <Redirect to="/" />
-        )} />
+      <main className="column split">
+        <div className="content">
+          <Header
+            isAuth={isAuth}
+            login={auth.login}
+            logout={auth.logout}
+            getSearchResults={this.getSearchResults}
+            handleChange={this.handleChange}
+            search={this.state.search} />
 
-        <Route path="/" exact render={() => {
-          if ( !isAuth ) {
-            return(
-              <div className="landing column y-center">
+          <Route path="/dashboard" render={() => (
+            isAuth ?
+              <Dashboard
+                results={this.state.results}
+                search={this.state.query}
+                setFavorite={this.setFavorite}
+                favorites={this.state.favorites}
+                show_favorites={this.state.show_favorites}
+                switchTab={this.switchTab}
+                current_page={this.state.current_page}
+                changePage={this.changePage} /> : <Redirect to="/" />
+          )} />
 
-                <h1>Start Storing Your Favorite Giphys Now!</h1>
+          <Route path="/" exact render={() => {
+            if (!isAuth) {
+              return (
+                <div className="landing column y-center">
 
-                <p>Tired of searching for your favorite gifs? GiphyBook gives you quick access to all your favs!</p>
+                  <h1>Start Storing Your Favorite Giphys Now!</h1>
 
-                <button className="dash-login" onClick={auth.login}>Click To Login</button>
+                  <p>Tired of searching for your favorite gifs? GiphyBook gives you quick access to all your favs!</p>
 
-              </div>
-            )
-          } else return <Redirect to="/dashboard" />
-        }} />
+                  <button className="dash-login" onClick={auth.login}>Click To Login</button>
 
-        <Route path="/callback" render={() => (
-          <Callback processAuth={auth.processAuthentication} />
-        )} />
+                </div>
+              )
+            } else return <Redirect to="/dashboard" />
+          }} />
+
+          <Route path="/callback" render={() => (
+            <Callback processAuth={auth.processAuthentication} />
+          )} />
+        </div>
+
+        <footer className="row split y-center">
+          <p>&copy; {new Date().getFullYear()} GiphyBook</p>
+          <p>Created By JD Tadlock | Central Support</p>
+        </footer>
       </main>
     );
   }

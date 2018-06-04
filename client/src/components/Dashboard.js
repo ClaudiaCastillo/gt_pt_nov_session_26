@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 class Dashboard extends Component {
+
   copyLink = link => {
     let input = document.createElement('input');
 
@@ -27,7 +28,7 @@ class Dashboard extends Component {
 
         {!this.props.results.length && !this.props.show_favorites ? <h3>Type a search phrase into the input above.</h3> : ''}
 
-        {this.props.results.length ? <p className="query">Results for "{this.props.search}"</p> : ''}
+        {this.props.results.length ? <p className="query">Found these results for "{this.props.search}"</p> : ''}
 
         {this.props.show_favorites && !listing.length ? <h3>You haven't added any favorites yet.</h3> : ''}
 
@@ -50,6 +51,14 @@ class Dashboard extends Component {
             </div>
           ))}
         </div>
+
+        {this.props.results.length && !this.props.show_favorites ? (
+          <div className="pagination row x-center y-center">
+            <span onClick={() => this.props.changePage(false)}>Prev</span>
+            <span className="page">{this.props.current_page}</span>
+            <span onClick={() => this.props.changePage(true)}>Next</span>
+          </div>
+        ) : ''}
       </section>
     )
   }

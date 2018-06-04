@@ -165,6 +165,7 @@ header span.auth:hover:after {
 }
 
 /* Dashboard */
+
 .dashboard {
     padding: 25px 7%;
 }
@@ -243,6 +244,39 @@ p.query {
 }
 
 .listing .giphy .giphy-controls button:hover {
-  background: #fff;
-  color: #444;
+    background: #fff;
+    color: #444;
+}
+
+.pagination {
+    margin-top: 25px;
+}
+
+.pagination span {
+    border: 1px solid #fff;
+    border-radius: 1px;
+}
+
+.pagination span.page {
+    margin: 0 10px;
+    color: #eee;
+    padding: 4px 10px;
+}
+
+.pagination span:not(.page) {
+    padding: 4px 7px;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.pagination span:not(.page):hover {
+    background: #fff;
+    color: #444;
+}
+
+footer {
+    padding: 15px 7%;
+    background: rgba(0, 0, 0, .1);
+    font-size: .8rem;
+    margin-top: 35px;
 }
