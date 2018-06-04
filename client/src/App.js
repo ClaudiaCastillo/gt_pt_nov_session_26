@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Route, withRouter, Redirect } from 'react-router-dom';
 import Auth from './Auth';
+import { connect } from 'react-redux';
 
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
@@ -12,10 +13,8 @@ class App extends Component {
     super();
     
     this.state = {
-      name: '',
-      email: '',
       showModal: false,
-      search: '',
+      // search: '',
       query: '',
       results: [],
       favorites: [],
@@ -34,9 +33,8 @@ class App extends Component {
   switchTab = show_favorites => {
     if ( show_favorites ) {
       this.getUserFavorites()
-        .then(() => {
-          this.setState({show_favorites: true});
-        });
+        .then(() => this.setState({ show_favorites: true }));
+
     } else this.setState({ show_favorites: false });
   }
 
@@ -155,8 +153,7 @@ class App extends Component {
             login={auth.login}
             logout={auth.logout}
             getSearchResults={this.getSearchResults}
-            handleChange={this.handleChange}
-            search={this.state.search} />
+            handleChange={this.handleChange} />
 
           <Route path="/dashboard" render={() => (
             isAuth ?
@@ -201,4 +198,17 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+// const mapActionToProps = {
+//   updateSearch(search) {
+//     return {
+//       type: 'UPDATE_SEARCH',
+//       payload: { search }
+//     }
+//   }
+// }
+
+// const mapStateToProps = (state, props) => ({
+//   search: state.search
+// });
+
+export default withRouter(connect()(App));
