@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { switchTab, setFavorite, changePage } from '../actions/main_actions';
 
 class Dashboard extends Component {
 
@@ -18,6 +20,7 @@ class Dashboard extends Component {
 
   render() {
     let listing = this.props.show_favorites ? this.props.favorites : this.props.results;
+    console.log('favs', this.props.favorites);
 
     return(
       <section className="dashboard" >
@@ -28,13 +31,12 @@ class Dashboard extends Component {
 
         {!this.props.results.length && !this.props.show_favorites ? <h3>Type a search phrase into the input above.</h3> : ''}
 
-        {this.props.results.length ? <p className="query">Found these results for "{this.props.search}"</p> : ''}
+        {this.props.results.length ? <p className="query">Found these results for "{this.props.query}"</p> : ''}
 
         {this.props.show_favorites && !listing.length ? <h3>You haven't added any favorites yet.</h3> : ''}
 
         <div className="listing">
           {listing.map((gif, index) => (
-            
             <div
               key={gif.id ? gif.id : gif.gif_id}
               className="giphy column bottom"
@@ -64,4 +66,20 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapActionsToProps = {
+  switchTab,
+  setFavorite,
+  changePage
+}
+
+const mapStateToProps = (state, props) => {
+  return {
+    show_favorites: state.show_favorites,
+    results: state.results,
+    favorites: state.favorites,
+    query: state.query,
+    current_page: state.current_page
+  }
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(Dashboard);

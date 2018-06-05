@@ -5,19 +5,30 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router} from 'react-router-dom';
 
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { reducer } from './reducers/main_reducer';
 
-function reducers(state = {}, action) {
-  switch(action.type) {
-    case 'UPDATE_SEARCH':
-      return action.payload.search;
-    default:
-      return state;
-  }
-}
 
-const store = createStore(reducers);
+const storeEnhancers = compose(
+  applyMiddleware(thunk),
+  window.devToolsExtension && window.devToolsExtension()
+);
+
+
+const store = createStore(
+  reducer,
+  {
+    show_favorites: false,
+    results: [],
+    favorites: [],
+    search: '',
+    offset: 0,
+    current_page: 1
+  }, 
+  storeEnhancers
+);
 
 
 ReactDOM.render((

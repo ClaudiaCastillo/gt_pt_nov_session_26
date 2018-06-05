@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { updateSearch, getSearchResults } from '../actions/main_actions';
 
 const Header = props => (
   <header className="row split y-center">
@@ -10,7 +11,6 @@ const Header = props => (
           <input type="text"
             className="search"
             placeholder="Search"
-            name="search"
             onKeyUp={props.getSearchResults}
             onChange={props.updateSearch}
             value={props.search} />
@@ -29,12 +29,8 @@ const Header = props => (
 );
 
 const mapActionToProps = {
-  updateSearch(search) {
-    return {
-      type: 'UPDATE_SEARCH',
-      payload: { search }
-    }
-  }
+  updateSearch,
+  getSearchResults
 }
 
 const mapStateToProps = (state, props) => ({

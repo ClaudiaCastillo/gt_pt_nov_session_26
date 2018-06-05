@@ -19,6 +19,7 @@ router.get('/api/favorites', (req, res) => {
   User.findOne({email: email})
     .populate('gifs')
     .then(user => {
+      // console.log(user.gifs);
       if ( user )
         res.send(user.gifs);
       else res.send(null);
