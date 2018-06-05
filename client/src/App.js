@@ -57,7 +57,7 @@ class App extends Component {
     }
   }
 
-  createGiphy = (e) => {
+  setFavorite = (e) => {
     e.preventDefault();
 
     axios.post('/api/giphy', {url: this.state.url})
