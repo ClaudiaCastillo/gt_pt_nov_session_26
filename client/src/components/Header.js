@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateSearch, getSearchResults } from '../actions/main_actions';
+import { updateSearch } from '../actions/main_actions';
+import { getSearchResults } from '../actions/main_dispatches';
 
 const Header = props => (
   <header className="row split y-center">

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { switchTab, setFavorite, changePage } from '../actions/main_actions';
+import { switchTab, setFavorite, changePage } from '../actions/main_dispatches';
 
 class Dashboard extends Component {
 
@@ -20,7 +20,6 @@ class Dashboard extends Component {
 
   render() {
     let listing = this.props.show_favorites ? this.props.favorites : this.props.results;
-    console.log('favs', this.props.favorites);
 
     return(
       <section className="dashboard" >
