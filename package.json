@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"nodemon ./bin/www\" \"cd ./client && npm start\"",
+    "dev": "concurrently \"nodemon ./bin/www\" \"cd ./client && npm start\"",
+    "start": "node ./bin/www",
     "build": "cd ./client && npm run build"
   },
   "dependencies": {
