@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Gif = require('./Giphy');
+const Giphy = require('./Giphy');
 
 const UserSchema = new Schema({
   email: {
@@ -10,7 +10,7 @@ const UserSchema = new Schema({
   },
   gifs: [{
     type: Schema.Types.ObjectId,
-    ref: 'Gif'
+    ref: 'Giphy'
   }]
 });
 

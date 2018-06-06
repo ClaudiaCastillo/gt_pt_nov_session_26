@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const GiphySchema = mongoose.Schema({
+  gif_id: {
+    type: String,
+    required: true
+  },
   url: {
     type: String,
     required: true
