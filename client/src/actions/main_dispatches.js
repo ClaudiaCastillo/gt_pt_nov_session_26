@@ -92,10 +92,11 @@ export function getSearchResults(e) {
 
                 image.src = src;
                 image.onload = () => {
+                  let favorite = Array.isArray(favorites) ? favorites.find(fav => fav.gif_id === gif.id) : null;
                   results.push({
                     id: gif.id,
                     url: src,
-                    favorite: favorites.find(fav => fav.gif_id === gif.id) ? true : false
+                    favorite: favorite ? true : false
                   });
 
                   dispatch(actions.updateResults([...results]));
