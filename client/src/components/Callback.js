@@ -5,7 +5,6 @@ class Callback extends Component {
     this.props.processAuth();
   }
   
-
   render() {
     return(
       <div className="callback column y-center x-center">
