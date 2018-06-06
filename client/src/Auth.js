@@ -1,14 +1,13 @@
 /* eslint no-restricted-globals:0 */
 import auth0 from 'auth0-js';
 
-const env = process.env.NODE_ENV || 'dev';
-
 export default class Auth {
   constructor(history) {
     this.auth0 = new auth0.WebAuth({
       domain: 'jdtadlock.auth0.com',
       clientID: 'I2ULWQ0fuYCDcG6xs7QlsTRMfOtyiDW6',
-      redirectUri: env == 'dev' ? 'http://localhost:3000/callback' : 'https://warm-reef-54993.herokuapp.com/callback',
+      // 'http://localhost:3000/callback'
+      redirectUri: 'https://warm-reef-54993.herokuapp.com/callback',
       audience: 'https://jdtadlock.auth0.com/userinfo',
       responseType: 'token id_token',
       scope: 'openid email'
