@@ -6,8 +6,8 @@ export default class Auth {
     this.auth0 = new auth0.WebAuth({
       domain: 'jdtadlock.auth0.com',
       clientID: 'I2ULWQ0fuYCDcG6xs7QlsTRMfOtyiDW6',
-      // 'http://localhost:3000/callback'
-      redirectUri: 'https://warm-reef-54993.herokuapp.com/callback',
+      redirectUri:'http://localhost:3000/callback',
+      // redirectUri: 'https://warm-reef-54993.herokuapp.com/callback',
       audience: 'https://jdtadlock.auth0.com/userinfo',
       responseType: 'token id_token',
       scope: 'openid email'

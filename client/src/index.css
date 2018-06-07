@@ -33,6 +33,11 @@ button:hover {
     opacity: .96;
 }
 
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
 /* Globals */
 
 .row,
@@ -125,6 +130,10 @@ header span.auth:after {
 
 header span.auth:hover:after {
     opacity: 1;
+}
+
+.not-found {
+    padding: 25px 7%;
 }
 
 .landing {

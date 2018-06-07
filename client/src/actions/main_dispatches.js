@@ -65,7 +65,7 @@ export function setFavorite(gif, index, favorite_listing) {
   }
 }
 
-export function getSearchResults(e) {
+export function getSearchResults(e, history) {
   return (dispatch, getState) => {
     let is_page = e === 'page';
     let key = e.keyCode || e.which;
@@ -108,6 +108,7 @@ export function getSearchResults(e) {
               dispatch(actions.updateQuery(search));
               dispatch(actions.updateSearch(''));
               dispatch(actions.setShowFavorites(false));
+              history.push('/dashboard');
             });
         });
 

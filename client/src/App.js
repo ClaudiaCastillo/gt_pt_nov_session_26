@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Route, withRouter, Redirect } from 'react-router-dom';
+import { Route, withRouter, Redirect, Switch } from 'react-router-dom';
 import Auth from './Auth';
 
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import Callback from './components/Callback';
+import NotFound from './components/404';
 
 class App extends Component {
   render() {
@@ -19,30 +20,35 @@ class App extends Component {
             login={auth.login}
             logout={auth.logout} />
 
-          <Route path="/dashboard" render={() => (
-            isAuth ?
-              <Dashboard /> : <Redirect to="/" />
-          )} />
+          <Switch>
+            <Route path="/dashboard" render={() => (
+              isAuth ?
+                <Dashboard /> : <Redirect to="/" />
+            )} />
 
-          <Route path="/" exact render={() => {
-            if (!isAuth) {
-              return (
-                <div className="landing column y-center">
+            <Route path="/" exact render={() => {
+              if (!isAuth) {
+                return (
+                  <div className="landing column y-center">
 
-                  <h1>Start Storing Your Favorite Giphys Now!</h1>
+                    <h1>Start Storing Your Favorite Giphys Now!</h1>
 
-                  <p>Tired of searching for your favorite gifs? GiphyBook gives you quick access to all your favs!</p>
+                    <p>Tired of searching for your favorite gifs? GiphyBook gives you quick access to all your favs!</p>
 
-                  <button className="dash-login" onClick={auth.login}>Click To Login</button>
+                    <button className="dash-login" onClick={auth.login}>Click To Login</button>
 
-                </div>
-              )
-            } else return <Redirect to="/dashboard" />
-          }} />
+                  </div>
+                )
+              } else return <Redirect to="/dashboard" />
+            }} />
 
-          <Route path="/callback" render={() => (
-            <Callback processAuth={auth.processAuthentication} />
-          )} />
+            <Route path="/callback" render={() => (
+              <Callback processAuth={auth.processAuthentication} />
+            )} />
+
+            <Route component={NotFound} />
+          </Switch>
+
         </div>
 
         <footer className="row split y-center">
