@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"nodemon ./bin/www\" \"cd ./client && npm start\"",
-    "start": "node ./bin/www",
+    "start": "NODE_ENV=production node ./bin/www",
+    "build": "cd ./client && npm run build",
     "heroku-postbuild": "cd ./client && npm install --only=dev && npm install && npm run build"
   },
   "dependencies": {

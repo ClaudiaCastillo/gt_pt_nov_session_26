@@ -7,7 +7,7 @@ const logger = require('morgan');
 const env = process.env.NODE_ENV || 'dev';
 
 const mongoose = require('mongoose');
-mongoose.connect(env === 'dev' ? 'mongodb://localhost/gt_pt_26' : 'mongodb://<dbuser>:<dbpassword>@ds117605.mlab.com:17605/test_db');
+mongoose.connect(env === 'dev' ? 'mongodb://localhost/gt_pt_26' : 'mongodb://JD:password123@ds117605.mlab.com:17605/test_db');
 mongoose.Promise = Promise;
 
 const api_routes = require('./routes/api_routes');

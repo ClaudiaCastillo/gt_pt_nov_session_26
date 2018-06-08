@@ -5,8 +5,7 @@ import {
   UPDATE_QUERY,
   SET_SHOW_FAVORITES,
   UPDATE_CURRENT_PAGE,
-  UPDATE_OFFSET,
-  updateCurrentPage
+  UPDATE_OFFSET
 } from '../actions/actions';
 
 export function reducer(state, {type, payload}) {
