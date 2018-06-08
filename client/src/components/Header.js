@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { updateSearch } from '../actions/actions';
+import { getSearchResults } from '../actions/dispatches';
 
 const Header = props => (
   <header className="row split y-center">
@@ -11,7 +14,7 @@ const Header = props => (
             className="search" 
             placeholder="Search"
             onKeyUp={props.getSearchResults}
-            onChange={props.handleChange}
+            onChange={props.updateSearch}
             value={props.search} />
           <i className="fa fa-search" onClick={props.getSearchResults}></i>
         </div>
@@ -27,4 +30,17 @@ const Header = props => (
   </header>
 );
 
-export default Header;
+const mapActionsToProps = {
+  updateSearch,
+  getSearchResults
+}
+
+
+const mapStateToProps = state => {
+  return {
+    search: state.search
+  }
+}
+
+
+export default connect(mapStateToProps, mapActionsToProps)(Header);

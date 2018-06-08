@@ -12,7 +12,7 @@ body {
 }
 
 html, body {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
@@ -68,6 +68,11 @@ button {
 }
 
 /* Custom Styles */
+main {
+  color: #fff;
+  min-height: 100vh;
+}
+
 header {
   padding: 15px 10%;
   margin-bottom: 15px;
@@ -118,6 +123,10 @@ header span.auth:after {
 
 header span.auth:hover:after {
   opacity: 1;
+}
+
+.not-found {
+  padding: 25px 7%;
 }
 
 .callback {
@@ -216,11 +225,37 @@ p.query {
   color: #444;
 }
 
+.pagination span.page {
+  margin: 0 10px;
+  color: #eee;
+  padding: 4px 10px;
+}
+
+.pagination {
+  margin-top: 25px;
+}
+
+.pagination span {
+  border: 1px solid #fff;
+  border-radius: 1px;
+}
+
+.pagination span:not(.page) {
+  padding: 4px 7px;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.pagination span:not(.page):hover {
+  background: #fff;
+  color: #444;
+}
 
 
-
-
-
+footer {
+  padding: 15px 7%;
+  background: rgb(42, 51, 118);
+}
 
 
 

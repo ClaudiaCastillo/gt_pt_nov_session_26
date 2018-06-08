@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { switchTab, setFavorite, changePage } from '../actions/dispatches';
 
 class Dashboard extends Component {
   copyLink = link => {
@@ -18,7 +20,7 @@ class Dashboard extends Component {
   render() {
     let listing = this.props.show_favorites ? this.props.favorites : this.props.results;
 
-    console.log(listing);
+    // console.log(listing);
 
     return(
       <section className="dashboard">
@@ -58,9 +60,53 @@ class Dashboard extends Component {
 
         </div>
 
+        {this.props.results.length && !this.props.show_favorites ? (
+          <div className="pagination row x-center y-center">
+            <span onClick={() => this.props.changePage(false)}>Prev</span>
+            <span className="page">{this.props.current_page}</span>
+            <span onClick={() => this.props.changePage(true)}>Next</span>
+          </div>
+        ) : ''}
+
       </section>
     );
   }
 }
 
-export default Dashboard;
+const mapActionsToProps = {
+  switchTab,
+  setFavorite,
+  changePage
+}
+
+const mapStateToProps = state => {
+  return {
+    results: state.results,
+    favorites: state.favorites,
+    query: state.query,
+    show_favorites: state.show_favorites,
+    current_page: state.current_page,
+    offset: state.offset
+  }
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(Dashboard);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
