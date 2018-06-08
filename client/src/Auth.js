@@ -7,7 +7,7 @@ export default class Auth {
       domain: 'jdtadlock.auth0.com',
       clientID: 'I2ULWQ0fuYCDcG6xs7QlsTRMfOtyiDW6',
       
-      redirectUri: 'https://protected-falls-62810.herokuapp.com/callback',
+      redirectUri: 'https://murmuring-forest-60880.herokuapp.com/callback',
       // redirectUri: 'http://localhost:3000/callback',
       audience: 'https://jdtadlock.auth0.com/userinfo',
       responseType: 'token id_token',
