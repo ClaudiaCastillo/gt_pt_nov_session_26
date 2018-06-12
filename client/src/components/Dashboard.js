@@ -30,7 +30,7 @@ class Dashboard extends Component {
 
         {!this.props.results.length && !this.props.show_favorites ? <h3>Type a search phrase into the input above.</h3> : ''}
 
-        {this.props.results.length ? <p className="query">Found these results for "{this.props.query}"</p> : ''}
+        {this.props.results.length && !this.props.show_favorites ? <p className="query">Found these results for "{this.props.query}"</p> : ''}
 
         {this.props.show_favorites && !listing.length ? <h3>You haven't added any favorites yet.</h3> : ''}
 

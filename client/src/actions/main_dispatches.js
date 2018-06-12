@@ -65,7 +65,7 @@ export function setFavorite(gif, index, favorite_listing) {
   }
 }
 
-export function getSearchResults(e, history) {
+export function getSearchResults(e) {
   return (dispatch, getState) => {
     let is_page = e === 'page';
     let key = e.keyCode || e.which;
@@ -74,12 +74,12 @@ export function getSearchResults(e, history) {
 
       getUserFavorites()
         .then(res => {
-          dispatch(actions.updateFavorites(res.data));
+          dispatch(actions.updateFavorites(res.data ? res.data : []));
 
           let api_url = 'https://api.giphy.com/v1/gifs/search';
           let api_key = '3K2ZmyEMrXGGyR7EGBGnbti1HZNk2TZL';
           let { search, offset, favorites, query } = getState();
-
+          
           search = is_page ? query : search;
 
           axios.get(`${api_url}?api_key=${api_key}&q=${search}&offset=${offset}`)
@@ -92,7 +92,7 @@ export function getSearchResults(e, history) {
 
                 image.src = src;
                 image.onload = () => {
-                  let favorite = Array.isArray(favorites) ? favorites.find(fav => fav.gif_id === gif.id) : null;
+                  let favorite = favorites.find(fav => fav.gif_id === gif.id);
                   results.push({
                     id: gif.id,
                     url: src,
@@ -108,7 +108,6 @@ export function getSearchResults(e, history) {
               dispatch(actions.updateQuery(search));
               dispatch(actions.updateSearch(''));
               dispatch(actions.setShowFavorites(false));
-              history.push('/dashboard');
             });
         });
 
