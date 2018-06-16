@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { updateSearch } from '../actions/main_actions';
 import { getSearchResults } from '../actions/main_dispatches';
 
@@ -16,10 +16,10 @@ const Header = props => (
           <input type="text"
             className="search"
             placeholder="Search"
-            onKeyUp={(e) => props.getSearchResults(e, props.history)}
+            onKeyUp={props.getSearchResults}
             onChange={props.updateSearch}
             value={props.search} />
-          <i className="fa fa-search" onClick={(e) => props.getSearchResults(e, props.history)}></i>
+          <i className="fa fa-search" onClick={props.getSearchResults}></i>
         </div>
       ) : ''}
     </div>
@@ -43,4 +43,4 @@ const mapStateToProps = (state, props) => ({
 });
 
 
-export default withRouter(connect(mapStateToProps, mapActionToProps)(Header));
+export default connect(mapStateToProps, mapActionToProps)(Header);
