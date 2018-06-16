@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "concurrently \"nodemon ./bin/www\" \"cd ./client && npm start\"",
     "start": "node ./bin/www",
-    "build": "cd ./client && npm run build"
+    "prod": "cd ./client && npm run build"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
