@@ -5,7 +5,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router} from 'react-router-dom';
 
-import { createStore, compose, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
@@ -14,7 +14,8 @@ import { reducer } from './reducers/main_reducer';
 
 const storeEnhancers = compose(
   applyMiddleware(thunk),
-  window.devToolsExtension && window.devToolsExtension()
+  window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
+  // window.devToolsExtension && window.devToolsExtension()
 );
 
 
